@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\category;
-use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\StorecategoryRequest;
-use App\Http\Requests\UpdatecategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -36,7 +34,7 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CategoryRequest $request)
+    public function store(StorecategoryRequest $request)
     {
         Category::create([
             'name' => $request->name
@@ -73,7 +71,7 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryRequest $request, Category $category)
+    public function update(StorecategoryRequest $request, Category $category)
     {
         $category->update([
             'name' => $request->name,

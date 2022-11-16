@@ -4,7 +4,7 @@
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="border-b border-gray-200 bg-white p-6">
                     <!-- component -->
-                    <div class="w-full rounded-md bg-white p-8">
+                    <div class="w-full rounded-md bg-white p-2">
                         <div class="flex items-center justify-between pb-2">
                             <div>
                                 <h2 class="font-semibold text-gray-600">Categories</h2>

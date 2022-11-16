@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\todo;
+use App\Models\category;
 use App\Http\Requests\StoretodoRequest;
-use App\Http\Requests\UpdatetodoRequest;
 
 class TodoController extends Controller
 {
@@ -15,8 +15,8 @@ class TodoController extends Controller
      */
     public function index()
     {
-        $todo = Todo::paginate();
-        return view('todo.index');
+        $todos = Todo::orderBy('created_at','asc')->paginate();
+        return view('todo.index', compact('todos'));
     }
 
     /**
@@ -37,7 +37,12 @@ class TodoController extends Controller
      */
     public function store(StoretodoRequest $request)
     {
-        //
+        dd($request);
+        $todo= todo::create([
+            'title' => $request->title,
+            'category_id' => category::all()->random()->id
+        ]);
+        return redirect()->route('todo.index');
     }
 
     /**
@@ -69,7 +74,7 @@ class TodoController extends Controller
      * @param  \App\Models\todo  $todo
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatetodoRequest $request, todo $todo)
+    public function update(StoretodoRequest $request, todo $todo)
     {
         //
     }
