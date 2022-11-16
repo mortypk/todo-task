@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\category;
+use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\StorecategoryRequest;
 use App\Http\Requests\UpdatecategoryRequest;
 
@@ -15,7 +16,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories = Category::orderBy('name','asc')->paginate();
+        return view('category.index', compact('categories'));
     }
 
     /**
@@ -25,27 +27,30 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('category.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StorecategoryRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorecategoryRequest $request)
+    public function store(CategoryRequest $request)
     {
-        //
+        Category::create([
+            'name' => $request->name
+        ]);
+        return redirect()->route('category.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\category  $category
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(category $category)
+    public function show(Category $category)
     {
         //
     }
@@ -53,34 +58,38 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\category  $category
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(category $category)
+    public function edit(Category $category)
     {
-        //
+        return view('category.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatecategoryRequest  $request
-     * @param  \App\Models\category  $category
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatecategoryRequest $request, category $category)
+    public function update(CategoryRequest $request, Category $category)
     {
-        //
+        $category->update([
+            'name' => $request->name,
+        ]);
+        return redirect()->route('category.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\category  $category
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(category $category)
+    public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->back();
     }
 }

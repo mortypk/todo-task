@@ -15,7 +15,8 @@ class TodoController extends Controller
      */
     public function index()
     {
-        //
+        $todo = Todo::paginate();
+        return view('todo.index');
     }
 
     /**
