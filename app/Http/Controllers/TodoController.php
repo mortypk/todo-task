@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\todo;
 use App\Models\category;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoretodoRequest;
 
 class TodoController extends Controller
@@ -16,8 +15,9 @@ class TodoController extends Controller
      */
     public function index()
     {
-        $todos = Todo::orderBy('id','desc')->paginate();
-        return view('todo.index', compact('todos'));
+        // $todos = Todo::orderBy('id','desc')->paginate();
+        $categories = Category::with('todo')->get();
+        return view('todo.index', compact('categories'));
     }
 
     /**
@@ -40,7 +40,8 @@ class TodoController extends Controller
     {
         $todo= todo::create([
             'title' => $request->title,
-            'category_id' => category::all()->random()->id
+            'category_id' => $request->category_id,
+            'status'=> false
         ]);
         return redirect()->route('todo.index');
     }
@@ -64,7 +65,7 @@ class TodoController extends Controller
             ]);
         }else{
             $todo->update([
-                'status' => true,                
+                'status' => true,
             ]);
         }
         return redirect()->route('todo.index');
@@ -105,6 +106,6 @@ class TodoController extends Controller
     public function destroy(todo $todo)
     {
         $todo->delete();
-        return redirect()->route('todo.index');
+        return to_route('todo.index');
     }
 }

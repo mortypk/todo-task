@@ -9,4 +9,8 @@ class category extends Model
 {
     use HasFactory;
     protected $guarded  = [];
+    public function todo()
+    {
+        return $this->hasMany(todo::class);
+    }
 }

@@ -7,7 +7,7 @@
     <div class="py-2">
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                <div class="border-b border-gray-200 bg-white">
+                <div class="">
                     <!-- component -->
                     <div class="w-full rounded-md bg-white p-2">
                         <div class="pb-2">
@@ -27,22 +27,30 @@
                                             last:border-r last:rounded-r-md p-2" >
                                             Enter Task
                                         </div>
+                                        <select name="category_id" id="category_id"
+                                        class="block p-1 w-full min-w-0 flex-1 rounded-none border border-gray-300 bg-white text-base
+                                            focus:outline outline-2 outline-blue-400
+                                            first:rounded-l-md last:rounded-r-md">
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            @endforeach
+                                        </select>
                                         <input type="text" name="title" value="@isset($todo) {{ $todo->title }} @endisset"
                                             class="block p-1 w-full min-w-0 flex-1 rounded-none border border-gray-300 bg-white text-base
                                             focus:outline outline-2 outline-blue-400
                                             first:rounded-l-md last:rounded-r-md" />
-                                            @isset($todo)
+                                        @isset($todo)
                                             <button type="submit" class="cursor-pointer bg-blue-600 px-4 py-2 font-semibold tracking-wide text-white">
                                                 Update 
                                             </button>
                                             <a href="{{ route('todo.index') }}" class="cursor-pointer rounded-r-md bg-red-600 px-4 py-2 font-semibold tracking-wide text-white">
                                                 Cancel 
                                             </a>
-                                            @else
+                                        @else
                                             <button type="submit" class="cursor-pointer rounded-r-md bg-blue-600 px-4 py-2 font-semibold tracking-wide text-white">
                                                 Add
                                             </button>
-                                            @endisset
+                                        @endisset
                                     </div>
                                     @error('title')
                                     <div class="text-sm text-red-500">{{ $message }}</div>
@@ -51,56 +59,45 @@
                             </form>
                         </div>
                         <div class="overflow-x-auton -mx-4 sm:-mx-8 sm:px-8">
-                            <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
-                                <table class="min-w-full leading-normal">
-                                    <thead>
-                                        <tr class="border-b-2 border-gray-300 bg-gray-100 
-                                                text-gray-600 text-sm font-bold tracking-wider">
-                                            <th class="p-2 text-left">#</th>
-                                            <th class="p-2 text-left">Status</th>
-                                            <th class="p-2 text-left">Task Name</th>
-                                            <th class="p-2 text-left">Created at</th>
-                                            <th class="p-2 text-left"></th>
-                                        </tr>
-                                    </thead>
+                            <div class="inline-block min-w-full overflow-hidden">
+                                @foreach ($categories as $category)
+                                <details open class="bg-gray-100 duration-300 open:bg-gray-200 rounded-md mb-1">
+                                    <summary class="cursor-pointer border-b-2 border-gray-300 text-sm font-bold tracking-wider text-gray-600 px-5 py-3">
+                                        {{ $category->name }}
+                                    </summary>
+                                    <table class="min-w-full leading-normal">
                                     <tbody>
                                         {{-- todo --}}
-                                        @foreach ($todos as $todo)
-                                            <tr>
-                                                <td class="border-b border-gray-200 bg-white p-1 text-sm">
-                                                    <p class="whitespace-no-wrap text-gray-900">
-                                                        {{ $todo->id }}
-                                                    </p>
-                                                </td>
-                                                <td class="border-b border-gray-200 bg-white p-1 text-sm">
-                                                    <p class="whitespace-no-wrap text-gray-900">
-                                                        {{-- <input type="checkbox" @if( $todo->status ) checked @endif> --}}
+                                        @foreach ($category->todo as $todo)
+                                            <tr class="border-b border-gray-200 bg-white text-sm">
+                                                <td class="p-1">
+                                                    <p class="whitespace-no-wrap text-gray-900 mx-auto">
                                                         @if( $todo->status )
-                                                        <a href="{{ route('todo.change', $todo->id) }}" class="text-gray-600">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                                                            </svg>
-                                                        </a>
-                                                        @else
                                                         <a href="{{ route('todo.change', $todo->id) }}" class="text-green-600">
                                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                                                                 <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
                                                             </svg>
                                                         </a>
+                                                        @else
+                                                        <a href="{{ route('todo.change', $todo->id) }}" class="text-gray-600">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                                            </svg>
+                                                        </a>
                                                         @endif
                                                     </p>
                                                 </td>
-                                                <td class="border-b border-gray-200 bg-white p-1 text-sm">
+                                                <td class="p-1">
                                                     <p class="whitespace-no-wrap text-gray-900">
                                                         {{ $todo->title }}
                                                     </p>
                                                 </td>
-                                                <td class="border-b border-gray-200 bg-white p-1 text-sm">
+                                                <td class="p-1">
                                                     <p class="whitespace-no-wrap text-gray-900">
                                                         {{ $todo->created_at->diffForHumans() }}
                                                     </p>
                                                 </td>
-                                                <td class="flex border-b border-gray-200 bg-white p-1 text-sm">
+                                                <td class="flex p-1">
                                                     <a href="{{ route('todo.edit', $todo->id) }}" class="text-blue-600">
                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                                                             <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
@@ -121,11 +118,9 @@
                                             </tr>
                                         @endforeach
                                     </tbody>
-                                </table>
-                                <div class="flex flex-col border-t bg-white px-5 py-5">
-                                    <!-- Link -->
-                                    {{ $todos->links() }}
-                                </div>
+                                    </table>
+                                </details>
+                                @endforeach
                             </div>
                         </div>
                     </div>

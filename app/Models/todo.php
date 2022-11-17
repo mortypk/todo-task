@@ -9,4 +9,9 @@ class todo extends Model
 {
     use HasFactory;
     protected $guarded  = [];
+
+    public function category()
+    {
+        return $this->belongsTo(category::class);
+    }
 }
