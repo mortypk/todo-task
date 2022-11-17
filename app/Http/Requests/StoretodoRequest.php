@@ -25,7 +25,6 @@ class StoretodoRequest extends FormRequest
     {
         return [
             'title' => 'required',
-            'category_id' => 'required',
         ];
     }
 }

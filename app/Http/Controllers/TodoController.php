@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\todo;
 use App\Models\category;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoretodoRequest;
 
 class TodoController extends Controller
@@ -15,7 +16,7 @@ class TodoController extends Controller
      */
     public function index()
     {
-        $todos = Todo::orderBy('created_at','asc')->paginate();
+        $todos = Todo::orderBy('id','desc')->paginate();
         return view('todo.index', compact('todos'));
     }
 
@@ -37,7 +38,6 @@ class TodoController extends Controller
      */
     public function store(StoretodoRequest $request)
     {
-        dd($request);
         $todo= todo::create([
             'title' => $request->title,
             'category_id' => category::all()->random()->id
@@ -56,6 +56,19 @@ class TodoController extends Controller
         //
     }
 
+    public function change(todo $todo)
+    {
+        if($todo->status){
+            $todo->update([
+                'status' => false,                
+            ]);
+        }else{
+            $todo->update([
+                'status' => true,                
+            ]);
+        }
+        return redirect()->route('todo.index');
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -64,7 +77,8 @@ class TodoController extends Controller
      */
     public function edit(todo $todo)
     {
-        //
+        $todos = Todo::orderBy('id','desc')->paginate();
+        return view('todo.index', compact('todos','todo'));
     }
 
     /**
@@ -76,7 +90,10 @@ class TodoController extends Controller
      */
     public function update(StoretodoRequest $request, todo $todo)
     {
-        //
+        $todo->update([
+            'title' => $request->title,
+        ]);
+        return redirect()->route('todo.index');
     }
 
     /**
@@ -87,6 +104,7 @@ class TodoController extends Controller
      */
     public function destroy(todo $todo)
     {
-        //
+        $todo->delete();
+        return redirect()->route('todo.index');
     }
 }
