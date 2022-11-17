@@ -11,6 +11,46 @@
                     <!-- component -->
                     <div class="w-full rounded-md bg-white p-2">
                         <div class="pb-2">
+                            @if (isset($category))
+                                <form action="{{ route('todo.update', $category->id) }}" method="POST">
+                            @method('PUT')
+                            @else
+                                <form action="{{ route('todo.store') }}" method="POST">
+                            @endif
+                            @csrf
+                                <div class="flex flex-col">
+                                    <div class="flex">        
+                                        <div class="inline-flex px-2 rounded-none border-y 
+                                            text-sm font-bold
+                                            border-gray-300 bg-gray-100 text-gray-600 
+                                            first:border-l first:rounded-l-md 
+                                            last:border-r last:rounded-r-md p-2" >
+                                            Enter Category Name
+                                        </div>
+                                        <input type="text" name="title" value="@isset($category) {{ $category->name }} @endisset"
+                                            class="block p-1 w-full min-w-0 flex-1 rounded-none border border-gray-300 bg-white text-base
+                                            focus:outline outline-2 outline-blue-400
+                                            first:rounded-l-md last:rounded-r-md" />
+                                        @isset($category)
+                                            <button type="submit" class="cursor-pointer bg-blue-600 px-4 py-2 font-semibold tracking-wide text-white">
+                                                Update 
+                                            </button>
+                                            <a href="{{ route('todo.index') }}" class="cursor-pointer rounded-r-md bg-red-600 px-4 py-2 font-semibold tracking-wide text-white">
+                                                Cancel 
+                                            </a>
+                                        @else
+                                            <button type="submit" class="cursor-pointer rounded-r-md bg-blue-600 px-4 py-2 font-semibold tracking-wide text-white">
+                                                Add
+                                            </button>
+                                        @endisset
+                                    </div>
+                                    @error('title')
+                                    <div class="text-sm text-red-500">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </form>
+                        </div>
+                        <div class="pb-2">
                             @if (isset($todo))
                                 <form action="{{ route('todo.update', $todo->id) }}" method="POST">
                             @method('PUT')
@@ -70,7 +110,7 @@
                                         {{-- todo --}}
                                         @foreach ($category->todo as $todo)
                                             <tr class="border-b border-gray-200 bg-white text-sm">
-                                                <td class="p-1">
+                                                <td class="p-1 w-[10%]">
                                                     <p class="whitespace-no-wrap text-gray-900 mx-auto">
                                                         @if( $todo->status )
                                                         <a href="{{ route('todo.change', $todo->id) }}" class="text-green-600">
@@ -87,17 +127,17 @@
                                                         @endif
                                                     </p>
                                                 </td>
-                                                <td class="p-1">
+                                                <td class="p-1 w-[70%]">
                                                     <p class="whitespace-no-wrap text-gray-900">
                                                         {{ $todo->title }}
                                                     </p>
                                                 </td>
-                                                <td class="p-1">
+                                                <td class="p-1 w-[10%]">
                                                     <p class="whitespace-no-wrap text-gray-900">
                                                         {{ $todo->created_at->diffForHumans() }}
                                                     </p>
                                                 </td>
-                                                <td class="flex p-1">
+                                                <td class="flex p-1 w-[10%]">
                                                     <a href="{{ route('todo.edit', $todo->id) }}" class="text-blue-600">
                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                                                             <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />

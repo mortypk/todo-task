@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/todo/{todo}/change', [TodoController::class,'change'])->name('todo.change');
+    Route::get('/todo/{category}/change', [TodoController::class,'changeCategory'])->name('category.change');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('todo', TodoController::class);
     Route::resource('category', CategoryController::class);
