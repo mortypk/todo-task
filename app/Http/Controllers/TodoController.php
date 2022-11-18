@@ -79,7 +79,7 @@ class TodoController extends Controller
     public function edit(todo $todo)
     {
         $categories = Category::with('todo')->get();
-        $todos = Todo::orderBy('id','desc')->paginate();
+        $todos = Todo::with('category')->orderBy('id','desc')->paginate();
         return view('todo.index', compact('categories','todo'));
     }
     public function editCategory(Category $category)
@@ -100,6 +100,7 @@ class TodoController extends Controller
     {
         $todo->update([
             'title' => $request->title,
+            'category_id' => $request->category_id,
         ]);
         return redirect()->route('todo.index');
     }
