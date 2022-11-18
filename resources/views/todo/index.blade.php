@@ -12,10 +12,10 @@
                     <div class="w-full rounded-md bg-white p-2">
                         <div class="pb-2">
                             @if (isset($category))
-                                <form action="{{ route('todo.update', $category->id) }}" method="POST">
+                                <form action="{{ route('category.update', $category->id) }}" method="POST">
                             @method('PUT')
                             @else
-                                <form action="{{ route('todo.store') }}" method="POST">
+                                <form action="{{ route('category.store') }}" method="POST">
                             @endif
                             @csrf
                                 <div class="flex flex-col">
@@ -27,24 +27,28 @@
                                             last:border-r last:rounded-r-md p-2" >
                                             Enter Category Name
                                         </div>
-                                        <input type="text" name="title" value="@isset($category) {{ $category->name }} @endisset"
+                                        @isset($category)
+                                        <input type="text" name="name" value=" {{ $category->name }} "
                                             class="block p-1 w-full min-w-0 flex-1 rounded-none border border-gray-300 bg-white text-base
                                             focus:outline outline-2 outline-blue-400
                                             first:rounded-l-md last:rounded-r-md" />
-                                        @isset($category)
-                                            <button type="submit" class="cursor-pointer bg-blue-600 px-4 py-2 font-semibold tracking-wide text-white">
-                                                Update 
-                                            </button>
-                                            <a href="{{ route('todo.index') }}" class="cursor-pointer rounded-r-md bg-red-600 px-4 py-2 font-semibold tracking-wide text-white">
-                                                Cancel 
-                                            </a>
-                                        @else
+                                        <button type="submit" class="cursor-pointer bg-green-600 px-4 py-2 font-semibold tracking-wide text-white">
+                                            Update 
+                                        </button>
+                                        <a href="{{ route('todo.index') }}" class="cursor-pointer rounded-r-md bg-red-600 px-4 py-2 font-semibold tracking-wide text-white">
+                                            Cancel 
+                                        </a>
+                                        @else                                           
+                                        <input type="text" name="name" value="@isset($category) {{ $category->id }} @endisset"
+                                        class="block p-1 w-full min-w-0 flex-1 rounded-none border border-gray-300 bg-white text-base
+                                        focus:outline outline-2 outline-blue-400
+                                        first:rounded-l-md last:rounded-r-md" />
                                             <button type="submit" class="cursor-pointer rounded-r-md bg-blue-600 px-4 py-2 font-semibold tracking-wide text-white">
-                                                Add
+                                                New
                                             </button>
                                         @endisset
                                     </div>
-                                    @error('title')
+                                    @error('name')
                                     <div class="text-sm text-red-500">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -80,7 +84,7 @@
                                             focus:outline outline-2 outline-blue-400
                                             first:rounded-l-md last:rounded-r-md" />
                                         @isset($todo)
-                                            <button type="submit" class="cursor-pointer bg-blue-600 px-4 py-2 font-semibold tracking-wide text-white">
+                                            <button type="submit" class="cursor-pointer bg-green-600 px-4 py-2 font-semibold tracking-wide text-white">
                                                 Update 
                                             </button>
                                             <a href="{{ route('todo.index') }}" class="cursor-pointer rounded-r-md bg-red-600 px-4 py-2 font-semibold tracking-wide text-white">
@@ -102,8 +106,16 @@
                             <div class="inline-block min-w-full overflow-hidden">
                                 @foreach ($categories as $category)
                                 <details open class="bg-gray-100 duration-300 open:bg-gray-200 rounded-md mb-1">
-                                    <summary class="cursor-pointer border-b-2 border-gray-300 text-sm font-bold tracking-wider text-gray-600 px-5 py-3">
-                                        {{ $category->name }}
+                                    <summary class="flex justify-between cursor-pointer border-b-2 border-gray-300 text-sm font-bold tracking-wider text-gray-600 px-5 py-3">
+                                        <div>
+                                            {{ $category->name }}
+                                        </div>
+                                        <a href="{{ route('todo.category', $category->id) }}" class="text-blue-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                                <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+                                                <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+                                            </svg>
+                                        </a>
                                     </summary>
                                     <table class="min-w-full leading-normal">
                                     <tbody>

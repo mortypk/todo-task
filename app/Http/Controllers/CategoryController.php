@@ -39,9 +39,10 @@ class CategoryController extends Controller
         Category::create([
             'name' => $request->name
         ]);
-        return redirect()->route('category.index');
+        // return redirect()->route('category.index');
+        return to_route('todo.index');
     }
-
+    
     /**
      * Display the specified resource.
      *
@@ -52,7 +53,7 @@ class CategoryController extends Controller
     {
         //
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      *
@@ -76,7 +77,8 @@ class CategoryController extends Controller
         $category->update([
             'name' => $request->name,
         ]);
-        return redirect()->route('category.index');
+        // return redirect()->route('category.index');
+        return to_route('todo.index');
     }
 
     /**
